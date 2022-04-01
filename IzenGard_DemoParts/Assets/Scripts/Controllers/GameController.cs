@@ -8,8 +8,10 @@ namespace DefaultNamespace
 {
     public class GameController : MonoBehaviour
     {
+        // This is Test-controller!
         private List<BaseUnit> _baseUnits;
-        private List<BaseUnitView> _baseUnitViews;
+        private List<UnitMove> _baseUnitMoves;
+        private List<UnitAnimation> _baseUnitAnimations;
 
         private void Awake()
         {
@@ -18,8 +20,9 @@ namespace DefaultNamespace
 
         private void Start()
         {
-            _baseUnitViews = GetComponentsInChildren<BaseUnitView>().ToList();
-           foreach (var view in _baseUnitViews)
+            _baseUnitMoves = GetComponentsInChildren<UnitMove>().ToList();
+            _baseUnitAnimations = GetComponentsInChildren<UnitAnimation>().ToList();
+           foreach (var view in _baseUnitMoves)
            {
                _baseUnits.Add(new BaseUnit());
                view.AtThePosition += GiveCommand;
@@ -28,7 +31,7 @@ namespace DefaultNamespace
 
         private void Update()
         {
-            foreach (var view in _baseUnitViews)
+            foreach (var view in _baseUnitMoves)
             {
                 if (view.navMeshAgent.remainingDistance < 1)
                 {
@@ -39,14 +42,14 @@ namespace DefaultNamespace
 
         private void OnDestroy()
         {
-            foreach (var view in _baseUnitViews)
+            foreach (var view in _baseUnitMoves)
             {
                 view.AtThePosition -= GiveCommand;
             }
         }
         
         
-        private void GiveCommand(BaseUnitView view)
+        private void GiveCommand(UnitMove view)
         {
             view.pointWhereToGo = new Vector3(Random.Range(-6.0f, 6.0f),0,Random.Range(-6.0f, 6.0f));
             view.SetThePointWhereToGo();
